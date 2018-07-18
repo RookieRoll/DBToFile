@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DBToFile.Service;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,13 @@ namespace DBToFile
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            TestSetvice ttt = new TestSetvice();
+            ttt.test();
+            MessageBox.Show(string.Join(",",ttt.test()));
         }
     }
 }
