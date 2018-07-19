@@ -26,11 +26,27 @@ namespace DBToFile
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Export(object sender, RoutedEventArgs e)
         {
-            TestSetvice ttt = new TestSetvice();
-            ttt.test();
-            MessageBox.Show(string.Join(",",ttt.test()));
+            exportbtn.IsEnabled = true;
+            var win = new Message();
+            win.Show();
+           // MessageBox.Show(win,"正在导出文件，请稍后");
+            var str = constr.Text;
+            if(string.IsNullOrWhiteSpace(str))
+            {
+                win.Close();   
+                MessageBox.Show("请输入链接字符串");
+                exportbtn.IsEnabled = false;
+                return;
+            }
+            MySqlDBService dbService = new MySqlDBService(str);
+            dbService.HanderDbToFile();
+            win.Close();
+            MessageBox.Show("完成导出");
+
+            exportbtn.IsEnabled = true;
         }
+
     }
 }

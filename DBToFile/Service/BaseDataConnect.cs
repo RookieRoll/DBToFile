@@ -12,16 +12,18 @@ namespace DBToFile.Service
 {
     public class BaseDataConnect
     {
-        private static readonly string ConStr= ConfigurationManager.AppSettings["Path"];
-        
-        public static IDbConnection GetMySqlDbConnection()
+        public static IDbConnection GetMySqlDbConnection(string connect)
         {
-            return new MySqlConnection(ConStr);
+            return new MySqlConnection(connect);
         }
+        //public static IDbConnection GetMySqlDbConnection()
+        //{
+        //    return new MySqlConnection(ConStr);
+        //}
 
-        public static IDbConnection GetSqlServerDBConnection()
-        {
-            return new SqlConnection(ConStr);
-        }
+        //public static IDbConnection GetSqlServerDBConnection()
+        //{
+        //    return new SqlConnection(ConStr);
+        //}
     }
 }
