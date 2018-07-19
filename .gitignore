@@ -2,6 +2,6 @@
 # 此 .gitignore 文件已由 Microsoft(R) Visual Studio 自动创建。
 ################################################################################
 
-/DBToFile/obj/Debug
-/DBToFile/bin/Debug
+/DBToFile/obj
+/DBToFile/bin
 /packages
