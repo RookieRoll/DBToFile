@@ -22,6 +22,28 @@ namespace DBToFile.Service
         public void HanderDbToFile()
         {
             var dt = GetDataTable();
+            HandleDicToFile(dt);
+
+        }
+        public List<string> GetTableName()
+        {
+            var connect = BaseDataConnect.GetMySqlDbConnection(_conStr);
+            var dbName = connect.Database;
+            _folderName = connect.Database;
+            var sql = string.Format("select Table_name  as classname from information_schema.tables where table_schema='{0}'", dbName);
+            return connect.Query<string>(sql).ToList();
+        }
+
+        public void HandleTableToFile(string tableName)
+        {
+            Dictionary<string, List<DBFiled>> dbTable = new Dictionary<string, List<DBFiled>>();
+            var propies = GetPropies(tableName);
+            dbTable.Add(tableName, propies);
+            HandleDicToFile(dbTable);
+
+        }
+        private void HandleDicToFile(Dictionary<string, List<DBFiled>> dt)
+        {
             var classDt = ConvertToCode(dt);
 
             var partitioner = Partitioner.Create(0, classDt.Keys.Count);
@@ -33,7 +55,6 @@ namespace DBToFile.Service
                     WriteFile(key, classDt[key]);
                 }
             });
-
         }
 
         private Dictionary<string, List<DBFiled>> ConvertToCode(Dictionary<string, List<DBFiled>> dbTable)
@@ -148,14 +169,7 @@ namespace DBToFile.Service
             });
             return dic;
         }
-        private List<string> GetTableName()
-        {
-            var connect = BaseDataConnect.GetMySqlDbConnection(_conStr);
-            var dbName = connect.Database;
-            _folderName = connect.Database;
-            var sql = string.Format("select Table_name  as classname from information_schema.tables where table_schema='{0}'", dbName);
-            return connect.Query<string>(sql).ToList();
-        }
+
         private List<DBFiled> GetPropies(string table)
         {
             var connect = BaseDataConnect.GetMySqlDbConnection(_conStr);

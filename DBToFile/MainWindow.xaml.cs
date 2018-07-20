@@ -1,4 +1,5 @@
 ﻿using DBToFile.Service;
+using DBToFile.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,9 +22,12 @@ namespace DBToFile
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly FileViewModel model = new FileViewModel();
         public MainWindow()
         {
+            DataContext = model;
             InitializeComponent();
+
         }
 
         private void Export(object sender, RoutedEventArgs e)
@@ -31,11 +35,11 @@ namespace DBToFile
             exportbtn.IsEnabled = true;
             var win = new Message();
             win.Show();
-           // MessageBox.Show(win,"正在导出文件，请稍后");
-            var str = constr.Text;
-            if(string.IsNullOrWhiteSpace(str))
+            // MessageBox.Show(win,"正在导出文件，请稍后");
+            var str = model.Connection;
+            if (string.IsNullOrWhiteSpace(str))
             {
-                win.Close();   
+                win.Close();
                 MessageBox.Show("请输入链接字符串");
                 exportbtn.IsEnabled = false;
                 return;
@@ -47,6 +51,15 @@ namespace DBToFile
 
             exportbtn.IsEnabled = true;
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            model.InitTabelNames();
+        }
+
+
+
+
 
     }
 }
