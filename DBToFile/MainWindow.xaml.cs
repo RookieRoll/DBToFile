@@ -1,4 +1,5 @@
-﻿using DBToFile.Service;
+﻿using DBToFile.Entity;
+using DBToFile.Service;
 using DBToFile.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -33,33 +34,51 @@ namespace DBToFile
         private void Export(object sender, RoutedEventArgs e)
         {
             exportbtn.IsEnabled = true;
-            var win = new Message();
-            win.Show();
-            // MessageBox.Show(win,"正在导出文件，请稍后");
-            var str = model.Connection;
-            if (string.IsNullOrWhiteSpace(str))
+            var win = MessageService.GetInstance();
+            win.ShowMessage("正在导出.....");
+            var task = Task.Factory.StartNew(() => model.HandleDbToFile());
+            task.GetAwaiter().OnCompleted(() =>
             {
-                win.Close();
-                MessageBox.Show("请输入链接字符串");
-                exportbtn.IsEnabled = false;
-                return;
-            }
-            MySqlDBService dbService = new MySqlDBService(str);
-            dbService.HanderDbToFile();
-            win.Close();
-            MessageBox.Show("完成导出");
-
-            exportbtn.IsEnabled = true;
+                win.CloseMessage();
+                MessageBox.Show("完成导出");
+                exportbtn.IsEnabled = true;
+            });
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void GetTables(object sender, RoutedEventArgs e)
         {
-            model.InitTabelNames();
+            searchbtn.IsEnabled = false;
+            exportbtn.IsEnabled = false;
+            var win = MessageService.GetInstance();
+            win.ShowMessage("正在加载......");
+            var temp = Task.Factory.StartNew(() =>
+              {
+                  model.GetTables();
+              });
+            temp.GetAwaiter().OnCompleted(() =>
+            {
+                win.CloseMessage();
+                searchbtn.IsEnabled = true;
+                exportbtn.IsEnabled = true;
+            });
         }
 
+        private void Save(object sender, RoutedEventArgs e)
+        {
+            model.SaveXML();
+        }
 
+        private void LoadData(object sender, RoutedEventArgs e)
+        {
+            var select =savelist.SelectedItem as SaveEntity;
+            model.Connection = select.Connect;
+            model.Name = select.Name;
+        }
 
-
-
+        private void Delete(object sender, RoutedEventArgs e)
+        {
+            var select = savelist.SelectedItem as SaveEntity;
+            model.Delete(select.HideId);
+        }
     }
 }

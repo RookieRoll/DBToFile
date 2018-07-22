@@ -23,5 +23,16 @@ namespace DBToFile
         {
             InitializeComponent();
         }
+
+        public void ShowMessage(string msg)
+        {
+            this.MessageBox.Text = msg;
+            this.Show();
+        }
+
+        public void CloseMessage()
+        {
+            this.Hide();
+        }
     }
 }

@@ -19,18 +19,19 @@
       
         </ComboBox>
         <Button Content="查询" HorizontalAlignment="Left" Margin="196,130,0,0" VerticalAlignment="Top" Width="75"
-                IsEnabled="{Binding ElementName=constr, Path=Text.Length, Mode=OneWay}" Click="Button_Click"/>
+                IsEnabled="{Binding ElementName=constr, Path=Text.Length, Mode=OneWay}" Click="GetTables" Name="searchbtn"/>
         <Button Content="导出" HorizontalAlignment="Left" Margin="288,130,0,0" 
                 VerticalAlignment="Top" Width="75" Click="Export" Name="exportbtn" IsEnabled="{Binding ElementName=constr, Path=Text.Length, Mode=OneWay}" />
-        <ListView HorizontalAlignment="Left" Height="100" Margin="10,192,0,0" VerticalAlignment="Top" Width="219">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn/>
-                </GridView>
-            </ListView.View>
-        </ListView>
-        <Button Content="保存" HorizontalAlignment="Left" Margin="288,192,0,0" VerticalAlignment="Top" Width="75"/>
-        <Button Content="使用" HorizontalAlignment="Left" Margin="288,236,0,0" VerticalAlignment="Top" Width="75"/>
-        <Button Content="删除" HorizontalAlignment="Left" Margin="288,273,0,0" VerticalAlignment="Top" Width="75"/>
+
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="10,164,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="219" Text="{Binding Name}"/>
+        <ListView HorizontalAlignment="Left" Height="100" Margin="10,192,0,0" VerticalAlignment="Top" Width="219" ItemsSource="{Binding ConStrs}" Name="savelist" />
+        <Button Content="保存" HorizontalAlignment="Left" Margin="288,168,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.594,-0.799"
+                IsEnabled="{Binding ElementName=name,Path=Text.Length,Mode=OneWay}" Click="Save"
+                />
+        <Button Content="使用" HorizontalAlignment="Left" Margin="288,225,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.505,1.119"
+                Click="LoadData"
+                />
+        <Button Content="删除" HorizontalAlignment="Left" Margin="288,273,0,0" VerticalAlignment="Top" Width="75"
+                Click="Delete"/>
     </Grid>
 </Window>

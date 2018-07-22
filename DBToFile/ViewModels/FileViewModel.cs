@@ -1,4 +1,5 @@
-﻿using DBToFile.Service;
+﻿using DBToFile.Entity;
+using DBToFile.Service;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,18 +9,19 @@ using System.Threading.Tasks;
 
 namespace DBToFile.ViewModels
 {
-    public class FileViewModel : BaseViewModel, IDataErrorInfo
+    public class FileViewModel : BaseViewModel
     {
         private string connection;
         private List<string> tablenames;
-        private List<string> constrs;
+        private List<SaveEntity> constrs;
         private string selectedItem;
-        private MySqlDBService dbService;
+        private string name;
         public FileViewModel()
         {
-            tablenames = new List<string>() { "全部", "123", "234" };
-            constrs = new List<string>();
+            tablenames = new List<string>() { "全部" };
+            constrs = new List<SaveEntity>();
             selectedItem = tablenames.FirstOrDefault();
+
         }
         public string Connection
         {
@@ -34,6 +36,15 @@ namespace DBToFile.ViewModels
             }
         }
 
+        public string Name
+        {
+            get { return name; }
+            set
+            {
+                name = value;
+                RaisePropertyChanged("Name");
+            }
+        }
         public List<string> TableNames
         {
             get
@@ -47,8 +58,6 @@ namespace DBToFile.ViewModels
             }
         }
 
-
-
         public string SelectedItem
         {
             get { return selectedItem; }
@@ -59,7 +68,7 @@ namespace DBToFile.ViewModels
             }
         }
 
-        public List<string> ConStrs
+        public List<SaveEntity> ConStrs
         {
             get
             {
@@ -72,32 +81,35 @@ namespace DBToFile.ViewModels
             }
         }
 
-
-        public string this[string propertyname]
+        public void GetTables()
         {
-            get
-            {
-                string result = null;
-                if (propertyname == "Connection")
-                {
-                    if (string.IsNullOrWhiteSpace(connection))
-                        result = "数据库连接字符串不能为空";
-                }
-                return result;
-            }
+            var temp = new MySqlDBService(connection).GetTableNames();
+            temp.Insert(0, "全部");
+            this.TableNames = temp;
         }
 
-        public string Error
+        public void HandleDbToFile()
         {
-            get { return ""; }
+            MySqlDBService dbService = new MySqlDBService(connection);
+            if (string.IsNullOrWhiteSpace(selectedItem))
+                dbService.HanderDbToFile();
+            else
+                dbService.HandleTableToFile(selectedItem);
         }
 
-        public void InitTabelNames()
+        private XMLService service = new XMLService();
+        public void SaveXML()
         {
-            dbService = new MySqlDBService(connection);
-            this.TableNames.Clear();
-            this.TableNames.Add("全部");
-            this.TableNames.AddRange(dbService.GetTableName());
+            if (string.IsNullOrWhiteSpace(connection))
+                throw new Exception("err connection");
+            if (string.IsNullOrWhiteSpace(name))
+                throw new Exception("err name");
+            service.Add(name,connection);
+        }
+
+        public void Delete(string guid)
+        {
+            service.Delete(guid);
         }
     }
 }

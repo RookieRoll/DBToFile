@@ -1,8 +1,9 @@
-﻿using Dapper;
-using DBToFile.Entity;
+﻿using DBToFile.Entity;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -10,13 +11,12 @@ using System.Threading.Tasks;
 
 namespace DBToFile.Service
 {
-    public class MySqlDBService
+    public class MySqlDBService : BaseDataSerivce
     {
-        private readonly string _conStr;
         private string _folderName;
-        public MySqlDBService(string constr)
+        public MySqlDBService(string constr) : base(constr)
         {
-            _conStr = constr;
+            _folderName = GetDBName();
         }
 
         public void HanderDbToFile()
@@ -25,15 +25,6 @@ namespace DBToFile.Service
             HandleDicToFile(dt);
 
         }
-        public List<string> GetTableName()
-        {
-            var connect = BaseDataConnect.GetMySqlDbConnection(_conStr);
-            var dbName = connect.Database;
-            _folderName = connect.Database;
-            var sql = string.Format("select Table_name  as classname from information_schema.tables where table_schema='{0}'", dbName);
-            return connect.Query<string>(sql).ToList();
-        }
-
         public void HandleTableToFile(string tableName)
         {
             Dictionary<string, List<DBFiled>> dbTable = new Dictionary<string, List<DBFiled>>();
@@ -42,6 +33,22 @@ namespace DBToFile.Service
             HandleDicToFile(dbTable);
 
         }
+
+        public List<string> GetTableNames()
+        {
+            var dbName = GetDBName();
+            var sql = string.Format("select Table_name  as classname from information_schema.tables where table_schema='{0}'", dbName);
+
+            MySqlDataReader reader = (MySqlDataReader)ExecuteQuery(sql);
+            List<string> list = new List<string>();
+            while (reader.Read())
+            {
+                list.Add(reader.GetString("classname"));
+            }
+            Close();
+            return list;
+        }
+
         private void HandleDicToFile(Dictionary<string, List<DBFiled>> dt)
         {
             var classDt = ConvertToCode(dt);
@@ -160,7 +167,7 @@ namespace DBToFile.Service
         private Dictionary<string, List<DBFiled>> GetDataTable()
         {
             Dictionary<string, List<DBFiled>> dic = new Dictionary<string, List<DBFiled>>();
-            var tables = GetTableName();
+            var tables = GetTableNames();
 
             tables.ForEach(m =>
             {
@@ -172,10 +179,29 @@ namespace DBToFile.Service
 
         private List<DBFiled> GetPropies(string table)
         {
-            var connect = BaseDataConnect.GetMySqlDbConnection(_conStr);
-            var dbName = connect.Database;
+            //var connect = BaseDataSerivce.GetMySqlDbConnection(_conStr);
+            //var dbName = connect.Database;
+            //return connect.Query<DBFiled>(sql).ToList();
+            var dbName = GetDBName();
             var sql = string.Format("select COLUMN_NAME as Name, DATA_TYPE as Type,COLUMN_COMMENT as Comment from information_schema.COLUMNS where table_name = '{0}' and table_schema = '{1}'", table, dbName);
-            return connect.Query<DBFiled>(sql).ToList();
+            var reader = (MySqlDataReader)ExecuteQuery(sql);
+            List<DBFiled> list = new List<DBFiled>();
+            while (reader.Read())
+            {
+                list.Add(new DBFiled
+                {
+                    Name=reader.GetString("Name"),
+                    Comment=reader.GetString("Comment"),
+                    Type=reader.GetString("Type")
+                });
+            }
+            Close();
+            return list;
+        }
+
+        protected override IDbConnection GetDBConnection(string constr)
+        {
+            return new MySqlConnection(constr);
         }
     }
 }
