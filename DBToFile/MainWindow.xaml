@@ -24,7 +24,16 @@
                 VerticalAlignment="Top" Width="75" Click="Export" Name="exportbtn" IsEnabled="{Binding ElementName=constr, Path=Text.Length, Mode=OneWay}" />
 
         <TextBox HorizontalAlignment="Left" Height="23" Margin="10,164,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="219" Text="{Binding Name}"/>
-        <ListView HorizontalAlignment="Left" Height="100" Margin="10,192,0,0" VerticalAlignment="Top" Width="219" ItemsSource="{Binding ConStrs}" Name="savelist" />
+        <ListView HorizontalAlignment="Left" Height="100" Margin="10,192,0,0" VerticalAlignment="Top" Width="219" ItemsSource="{Binding ConStrs}"
+                  Name="savelist">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn  DisplayMemberBinding="{Binding Name}">
+                        <GridViewColumnHeader Visibility="Collapsed"></GridViewColumnHeader>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
         <Button Content="保存" HorizontalAlignment="Left" Margin="288,168,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.594,-0.799"
                 IsEnabled="{Binding ElementName=name,Path=Text.Length,Mode=OneWay}" Click="Save"
                 />

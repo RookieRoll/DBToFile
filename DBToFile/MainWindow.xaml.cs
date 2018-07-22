@@ -28,7 +28,6 @@ namespace DBToFile
         {
             DataContext = model;
             InitializeComponent();
-
         }
 
         private void Export(object sender, RoutedEventArgs e)
@@ -66,19 +65,21 @@ namespace DBToFile
         private void Save(object sender, RoutedEventArgs e)
         {
             model.SaveXML();
+
         }
 
         private void LoadData(object sender, RoutedEventArgs e)
         {
-            var select =savelist.SelectedItem as SaveEntity;
-            model.Connection = select.Connect;
+            var select =savelist.SelectedItem as RecordsViewModel;
+            model.Connection = select.ConStr;
             model.Name = select.Name;
         }
 
         private void Delete(object sender, RoutedEventArgs e)
         {
-            var select = savelist.SelectedItem as SaveEntity;
-            model.Delete(select.HideId);
+            var select = savelist.SelectedItem as RecordsViewModel;
+            model.Delete(select.Id);
+
         }
     }
 }

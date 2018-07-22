@@ -13,13 +13,13 @@ namespace DBToFile.ViewModels
     {
         private string connection;
         private List<string> tablenames;
-        private List<SaveEntity> constrs;
+        private List<RecordsViewModel> constrs;
         private string selectedItem;
         private string name;
         public FileViewModel()
         {
             tablenames = new List<string>() { "全部" };
-            constrs = new List<SaveEntity>();
+            constrs = service.GetSaves();
             selectedItem = tablenames.FirstOrDefault();
 
         }
@@ -68,7 +68,7 @@ namespace DBToFile.ViewModels
             }
         }
 
-        public List<SaveEntity> ConStrs
+        public List<RecordsViewModel> ConStrs
         {
             get
             {
@@ -105,11 +105,13 @@ namespace DBToFile.ViewModels
             if (string.IsNullOrWhiteSpace(name))
                 throw new Exception("err name");
             service.Add(name,connection);
+            ConStrs = service.GetSaves();
         }
 
         public void Delete(string guid)
         {
             service.Delete(guid);
+            ConStrs = service.GetSaves();
         }
     }
 }

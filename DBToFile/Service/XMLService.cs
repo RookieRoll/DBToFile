@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using XmlUtil;
+using XmlUtils;
 using System.Configuration;
-
+using DBToFile.ViewModels;
 
 namespace DBToFile.Service
 {
@@ -29,18 +29,24 @@ namespace DBToFile.Service
             _helper.Add(new SaveEntity
             {
                 Name = name,
-                Connect=connection
+                Connect = connection
             });
         }
 
-        public List<SaveEntity> GetSaves()
+        public List<RecordsViewModel> GetSaves()
         {
-            return _helper.Finds().ToList();
+            return _helper.Finds().Select(m=>new RecordsViewModel
+            {
+                Id=m.HideId,
+                ConStr=m.Connect,
+                Name=m.Name
+            }).ToList();
+            //return null;
         }
 
         public void Delete(string guid)
         {
-            var node = _helper.FirstOrDefault(m=>m.HideId==guid);
+            var node = _helper.FirstOrDefault(m => m.HideId == guid);
             _helper.Remove(node);
         }
     }
