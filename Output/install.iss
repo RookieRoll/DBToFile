@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "DbToFile"
-#define MyAppVersion "1.0"
+#define MyAppVersion "1.0.2"
 #define MyAppPublisher "Kobold, Inc."
 #define MyAppExeName "DBToFile.exe"
 
@@ -10,7 +10,7 @@
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{6990EB8D-1891-4D0D-83C1-DD1FA0F6CF44}
+AppId={{26971CB8-949E-4C9E-93C3-DB45BC3333A1}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
@@ -18,7 +18,7 @@ AppPublisher={#MyAppPublisher}
 DefaultDirName={pf}\{#MyAppName}
 DisableProgramGroupPage=yes
 OutputBaseFilename=setup
-SetupIconFile=C:\Users\RWX\Downloads\install.ico
+SetupIconFile=C:\Users\RWX\Downloads\db.ico
 Compression=lzma
 SolidCompression=yes
 
@@ -30,11 +30,14 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 
 [Files]
 Source: "D:\DEMO\DBToFile\DBToFile\bin\Release\DBToFile.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\DEMO\DBToFile\DBToFile\bin\Release\Dapper.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\DEMO\DBToFile\DBToFile\bin\Release\Dapper.xml"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\DEMO\DBToFile\DBToFile\bin\Release\DBToFile.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\DEMO\DBToFile\DBToFile\bin\Release\DBToFile.exe.config"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\DEMO\DBToFile\DBToFile\bin\Release\DBToFile.vshost.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\DEMO\DBToFile\DBToFile\bin\Release\DBToFile.vshost.exe.config"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\DEMO\DBToFile\DBToFile\bin\Release\DBToFile.vshost.exe.manifest"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\DEMO\DBToFile\DBToFile\bin\Release\MySql.Data.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\DEMO\DBToFile\DBToFile\bin\Release\User.xml"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\DEMO\DBToFile\DBToFile\bin\Release\XmlUtils.dll"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
