@@ -37,7 +37,7 @@
         <Button Content="保存" HorizontalAlignment="Left" Margin="288,168,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.594,-0.799"
                 IsEnabled="{Binding ElementName=name,Path=Text.Length,Mode=OneWay}" Click="Save"
                 />
-        <Button Content="使用" HorizontalAlignment="Left" Margin="288,225,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.505,1.119"
+        <Button Content="使用" HorizontalAlignment="Left" Margin="288,215,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.505,1.119"
                 Click="LoadData"
                 />
         <Button Content="删除" HorizontalAlignment="Left" Margin="288,273,0,0" VerticalAlignment="Top" Width="75"

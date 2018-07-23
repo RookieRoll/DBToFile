@@ -18,7 +18,7 @@ namespace DBToFile.ViewModels
             set
             {
                 id = value;
-                RaisePropertyChanged(nameof(Id));
+                RaisePropertyChanged("Id");
             }
         }
 
@@ -28,14 +28,14 @@ namespace DBToFile.ViewModels
             set
             {
                 this.name = value;
-                RaisePropertyChanged(nameof(Name));
+                RaisePropertyChanged("Name");
             }
         }
 
         public string ConStr
         {
             get { return constr; }
-            set { this.constr = value; RaisePropertyChanged(nameof(constr)); }
+            set { this.constr = value; RaisePropertyChanged("ConStr"); }
         }
     }
 }
