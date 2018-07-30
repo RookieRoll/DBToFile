@@ -81,5 +81,11 @@ namespace DBToFile
             model.Delete(select.Id);
 
         }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            var win = MessageService.GetInstance();
+            win.Close();
+        }
     }
 }

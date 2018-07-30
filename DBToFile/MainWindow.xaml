@@ -6,7 +6,10 @@
         xmlns:local="clr-namespace:DBToFile"
         mc:Ignorable="d"
         ResizeMode="NoResize"
-        Title="生成文件" Height="350" Width="400">
+        Title="生成文件" Height="350" Width="400"
+        Closed="Window_Closed"
+        
+        >
     <Grid Name="filepanel">
         <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="请输入数据库链接字符串" VerticalAlignment="Top" Width="149" />
         <TextBox HorizontalAlignment="Left" Height="107" Margin="10,42,0,0" TextWrapping="Wrap" 
